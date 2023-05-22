@@ -1,4 +1,4 @@
-module private/mediatr
+module github.com/Delisa-sama/mediator
 
 go 1.20
 
