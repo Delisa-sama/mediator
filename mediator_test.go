@@ -1,6 +1,7 @@
 package mediator
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -8,6 +9,7 @@ import (
 )
 
 func TestMediator_Publish(t *testing.T) {
+	testErr := errors.New("test error")
 	tests := []struct {
 		name     string
 		handlers []any
@@ -53,6 +55,22 @@ func TestMediator_Publish(t *testing.T) {
 			},
 			args:    []any{1, 2, 3},
 			wantErr: ErrTooManyArguments,
+		},
+		{
+			name: "handler error is nil",
+			handlers: []any{
+				func(first int) error { return nil },
+			},
+			args:    []any{1},
+			wantErr: nil,
+		},
+		{
+			name: "handler error propagated",
+			handlers: []any{
+				func(first int) error { return testErr },
+			},
+			args:    []any{1},
+			wantErr: testErr,
 		},
 	}
 	for _, tt := range tests {

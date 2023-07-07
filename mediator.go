@@ -71,5 +71,9 @@ func (m *Mediator) Publish(args ...any) error {
 		return nil
 	}
 
+	if result[0].IsNil() {
+		return nil
+	}
+
 	return result[0].Interface().(error)
 }
